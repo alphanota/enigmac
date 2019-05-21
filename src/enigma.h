@@ -62,6 +62,9 @@ class Enigma{
     void setStecker(int plugs[],int plugSize);
     void setStecker(std::string plugs);
     std::string encode(std::string message);
+    void setSettings(int w0,int w1,int w2, char r0, char r1, char r2, char g0, char g1, char g2, std::string stecker);
+    void clearStecker();
+    void setSettings(std::string settings);
 };
 
 

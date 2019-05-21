@@ -279,3 +279,49 @@ std::string Enigma::encode(std::string message){
     }
     return text;
 }
+
+void Enigma::setSettings(int w0, int w1, int w2, char r0, char r1, char r2, char g0, char g1, char g2,
+                         std::string stecker) {
+
+    walzenlage[0]=w0;
+    walzenlage[1]=w1;
+    walzenlage[2]=w2;  // choice of rotors
+
+    ringstellung[0]=r0-'A';
+    ringstellung[1]=r1-'A';
+    ringstellung[2]=r2-'A';  // choice of rotors
+
+    grundstellung[0]=g0-'A'; // current rotation of the rotors
+    grundstellung[1]=g1-'A';
+    grundstellung[2]=g2-'A';
+
+}
+
+void Enigma::clearStecker(){
+    for(int i =0; i < 26;i++){
+        plugBoard[i] = i;
+    }
+}
+
+void Enigma::setSettings(std::string settings) {
+    walzenlage[0]= settings[0]-'0';
+    walzenlage[1]= settings[1]-'0';
+    walzenlage[2]= settings[2]-'0';  // choice of rotors
+
+    ringstellung[0]=settings[3] -'A';
+    ringstellung[1]=settings[4] -'A';
+    ringstellung[2]=settings[5] -'A';  // choice of rotors
+
+    grundstellung[0]=settings[6] -'A'; // current rotation of the rotors
+    grundstellung[1]=settings[7] -'A';
+    grundstellung[2]=settings[8] -'A';
+
+    clearStecker();
+    for(int p = 9; p < settings.size(); p+=2){
+        int a = settings[p] - 'A';
+        int b = settings[p+1] - 'A';
+
+        plugBoard[a] = b;
+        plugBoard[b] = a;
+    }
+}

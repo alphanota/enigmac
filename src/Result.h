@@ -6,7 +6,16 @@
 #define ENIGMAC_RESULT_H
 
 
+#include <string>
+
 class Result {
+public:
+    Result(const std::string &setting, double result, int bin);
+
+    bool operator<(const Result &rhs) const;
+    std::string setting;
+    double result;
+    int bin;
 
 };
 

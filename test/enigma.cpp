@@ -8,7 +8,7 @@
 
 
 TEST_CASE("Enigma machine", "[enigma]") {
-    Enigma enigma;
+    //Enigma enigma;
     Enigma machine(1,5,0,'I','W','M','A','A','A');
     machine.setStecker("JKFIAQ");
 
@@ -17,4 +17,7 @@ TEST_CASE("Enigma machine", "[enigma]") {
 
     std::string text = machine.encode(plaintext);
     REQUIRE( text == encryptedText );
+
+}
+
 }
