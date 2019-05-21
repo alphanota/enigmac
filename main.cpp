@@ -1,37 +1,21 @@
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>  // for strtol
 
-#include "src/enigma.h"
-#include "src/Sinkov.h"
 #include "src/Crack.h"
-#include "src/ResultContainer.h"
 
 using  namespace std;
 
-const string cryptText = "MXZQISHYLOQDRLUWJQLJXZDVTEZUFRASGKFFNFLUZCLVQJCNKHQKUAIGRTPOIQWMLZBHUSSAH";
-const string cryptedText2016 = "CGKYTCJPXBMRRIQCQCVPYVYWVTCHEVQKCZNYXZULOPYWFCMLVPSOSYWZVDWOYAMCWMJ";
+int main(int argsc, char* argv[]) {
 
-void example(){
-    Enigma machine;
-    machine.setSettings("150IWMAAAJKFIAQ");
-    string text = machine.encode(cryptText);
-    cout << text << endl;
+    if(argsc <3) {
+        cout << "usage: ./enigma [ciphertext] [#plugpairs]" << endl;
+        return 1;
+    }
 
-    Sinkov sinkov;
-    double score = sinkov.score(cryptText);
-    cout << "Score: " << score << endl;
-
-    cout << sinkov.score("LIFESBUTAWALKINGSHADOWAPOORPLAYERTHATSTRUTSANDFRETSHISHOURUPONTHESTAGEKDB");
-}
-
-int main() {
-
-    //example();
-    Enigma machine;
-    machine.setSettings("524FXCAAAFYMNOSDL");
-    cout << machine.encode(cryptedText2016) << endl;
     Crack crack;
-    //crack.decipher(cryptedText2016);
-    //crack.findStecker("step4.txt",cryptedText2016);
+
+    crack.decipher(argv[1],stoi(argv[2]));
+
     return 0;
 }

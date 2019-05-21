@@ -14,7 +14,7 @@ class Crack {
 public:
 
 
-    void decipher(string text);
+    void decipher(string text, int numSteckers);
     void findStecker(string filename, string text);
 };
 

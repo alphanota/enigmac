@@ -32,9 +32,8 @@ ResultContainer checkRingstellung(string text, ResultContainer previousResults) 
                 }
             }
         c++;
-        cout << c << "/" << size << endl;
+        cout << "finding ringstellung, trial" << c << "/" << size << endl;
     }
-    newResults.save("step2_nr.txt");
     return newResults;
 }
 
@@ -59,9 +58,8 @@ ResultContainer checkGrundstellung(string text) {
                 }
             }
         }
-        cout << "grundstellung: " << i << endl;
+        cout << "finding grundstellung: trial " << i << endl;
     }
-    container.save("step1_g.txt");
     return container;
 }
 
@@ -86,23 +84,39 @@ ResultContainer checkStecker(string text, ResultContainer r) {
             }
         }
         c++;
-        cout << c << "/" << size << endl;
+        cout << "Finding plug pair, trial: " << c << "/" << size << endl;
     }
-
-    newResults.save("step2_stecker_1.txt");
     return newResults;
-
-
 }
 
-void Crack::decipher(string text) {
+void decodeFromResults(ResultContainer results, int lines, string text) {
+    std::multiset<Result> settings = results.getResults();
+    std::multiset<Result>::iterator it = settings.begin();
+    Enigma machine;
+    for(int i =0; i < lines; i++){
+        machine.setSettings(it->setting);
+        cout << it->setting << " " << machine.encode(text) << endl;
+        it++;
+    }
+}
+
+void Crack::decipher(string text, int numSteckers) {
     ResultContainer result(100000);
     result = checkGrundstellung(text);
-    result = checkStecker(text,result);
+    int plugsLeft = numSteckers;
+    if (plugsLeft > 0) {
+        result = checkStecker(text,result);
+        plugsLeft -= 1;
+    }
+
     result = checkRingstellung(text,result);
-    result = checkStecker(text,result);
-    result = checkStecker(text,result);
-    result.save("step3.txt");
+
+    for(int pair = 0; pair < plugsLeft; pair++) {
+        result = checkStecker(text,result);
+    }
+
+    result.save("phase3_results.txt");
+    decodeFromResults(result,20, text);
 }
 
 void Crack::findStecker(string filename, string text) {
