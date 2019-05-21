@@ -9,6 +9,7 @@
 using  namespace std;
 
 const string cryptText = "MXZQISHYLOQDRLUWJQLJXZDVTEZUFRASGKFFNFLUZCLVQJCNKHQKUAIGRTPOIQWMLZBHUSSAH";
+const string cryptedText2016 = "CGKYTCJPXBMRRIQCQCVPYVYWVTCHEVQKCZNYXZULOPYWFCMLVPSOSYWZVDWOYAMCWMJ";
 
 void example(){
     Enigma machine;
@@ -25,10 +26,12 @@ void example(){
 
 int main() {
 
+    //example();
+    Enigma machine;
+    machine.setSettings("524FXCAAAFYMNOSDL");
+    cout << machine.encode(cryptedText2016) << endl;
     Crack crack;
-    example();
-    crack.decipher(cryptText);
-
-
+    //crack.decipher(cryptedText2016);
+    //crack.findStecker("step4.txt",cryptedText2016);
     return 0;
 }

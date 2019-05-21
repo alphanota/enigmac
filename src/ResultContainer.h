@@ -13,6 +13,7 @@ class ResultContainer {
 public:
     int limit; //# of elements the result set can contain;
     ResultContainer(int limit);
+    ResultContainer(std::string filename);
 
     void insert(const Result& result);
     void list();

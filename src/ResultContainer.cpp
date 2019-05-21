@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "ResultContainer.h"
 
 ResultContainer::ResultContainer(int limit) : limit(limit) {}
@@ -43,6 +44,34 @@ void ResultContainer::save(std::string file) {
 
 std::multiset<Result> ResultContainer::getResults() {
     return results;
+}
+
+ResultContainer::ResultContainer(std::string filename) {
+    std::ifstream myfile(filename);
+    std::string   line;
+
+    getline(myfile,line);
+    std::stringstream firstline(line);
+    int containerSize;
+    firstline >> containerSize;
+
+    limit = containerSize;
+
+
+    while(getline(myfile, line))
+    {
+        std::stringstream linestream(line);
+
+        double score;
+        std::string setting;
+
+        linestream >> score >> setting;
+
+        results.insert(Result(setting,score,0));
+
+
+    }
+    myfile.close();
 }
 
 

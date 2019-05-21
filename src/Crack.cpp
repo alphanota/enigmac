@@ -104,3 +104,11 @@ void Crack::decipher(string text) {
     result = checkStecker(text,result);
     result.save("step3.txt");
 }
+
+void Crack::findStecker(string filename, string text) {
+    ResultContainer result(filename);
+    result = checkStecker(text,result);
+    result.list();
+    result.save("step4.txt");
+}
+

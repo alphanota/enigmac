@@ -15,6 +15,7 @@ public:
 
 
     void decipher(string text);
+    void findStecker(string filename, string text);
 };
 
 const int rotorCombinations[1008] =

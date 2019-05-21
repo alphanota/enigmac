@@ -19,5 +19,3 @@ TEST_CASE("Enigma machine", "[enigma]") {
     REQUIRE( text == encryptedText );
 
 }
-
-}
