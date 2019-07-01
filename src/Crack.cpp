@@ -2,6 +2,7 @@
 // Created by angel on 5/17/19.
 //
 
+#include <vector>
 #include "Crack.h"
 #include "enigma.h"
 #include "Sinkov.h"
@@ -12,7 +13,7 @@ ResultContainer checkRingstellung(string text, ResultContainer previousResults) 
     std::multiset<Result> results = previousResults.getResults();
     std::multiset<Result>::iterator it;
     Enigma machine;
-    ResultContainer newResults(100000);
+    ResultContainer newResults(1000);
     Sinkov sinkov;
     int size = results.size();
     int c = 0;
@@ -68,14 +69,25 @@ ResultContainer checkStecker(string text, ResultContainer r) {
     std::multiset<Result> results = r.getResults();
     std::multiset<Result>::iterator it;
     Enigma machine;
-    ResultContainer newResults(100000);
+    ResultContainer newResults(1000);
     Sinkov sinkov;
+
+
     int size = results.size();
     int c = 0;
     for(it = results.begin(); it != results.end(); ++it){
+        //==========
+        bool takenLetters[26] = {};
+        for(int  l = 9; l < it->setting.length(); l++ ){
+            int pos = it->setting[l] - 'A';
+            takenLetters[pos] = true;
+        }
+        //=========
 
         for(int l1 = 0; l1 < 26; l1++ ) {
             for (int l2 = l1+1; l2 < 26; l2++) {
+                if(takenLetters[l1] || takenLetters[l2]) continue;
+
                 string stecker = {alphabet[l1],alphabet[l2]};
                 string newSettings = (it->setting)+stecker;
                 machine.setSettings( newSettings );
@@ -101,7 +113,7 @@ void decodeFromResults(ResultContainer results, int lines, string text) {
 }
 
 void Crack::decipher(string text, int numSteckers) {
-    ResultContainer result(100000);
+    ResultContainer result(1);
     result = checkGrundstellung(text);
     int plugsLeft = numSteckers;
     if (plugsLeft > 0) {
