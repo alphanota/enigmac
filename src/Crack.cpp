@@ -139,11 +139,11 @@ vector<Result> checkGrundstellungParallel(string text) {
 }
 
 vector<Result> checkSteckerParallel(string basicString, vector<Result> vector) {
-    return checkFromPreviousResult(basicString, vector, worker_p_ns::gen_worker);
+    return checkFromPreviousResult(basicString, vector, new worker_p);
 }
 
 vector<Result> checkRingstellungParallel(string basicString, vector<Result> vector) {
-    return checkFromPreviousResult(basicString, vector, worker_r_ns::gen_worker);
+    return checkFromPreviousResult(basicString, vector, new worker_r);
 }
 
 

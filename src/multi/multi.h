@@ -108,14 +108,14 @@ std::vector<Result> a11c(std::string text)
     return to_vector(container);
 }
 
-std::vector<Result> checkFromPreviousResult(string text, std::vector<Result> results, std::vector<worker> (*gen_workers)(int)) {
+std::vector<Result> checkFromPreviousResult(string text, std::vector<Result> results, worker * w) {
 
     Sinkov sinkov;
     // number of threads
     int number_threads = NUMBER_THREADS;
 
     // set of workers
-    std::vector<worker> workers = gen_workers(NUMBER_THREADS);
+    worker* workers = w->gen_worker(NUMBER_THREADS);
     // threads for each worker
     boost::thread* bthread[NUMBER_THREADS];
 

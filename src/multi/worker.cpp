@@ -30,8 +30,6 @@ std::vector<Result> worker::getContainer(){
 void worker_p::process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& sinkov,
                           vector<Result>& container, string text) {
 
-    cout << "I'm running" << endl;
-
     //==========
     bool takenLetters[26] = {};
     for(int  l = 9; l < it->setting.length(); l++ ){
@@ -55,6 +53,11 @@ void worker_p::process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& 
 
 }
 
+worker_p *worker_p::gen_worker(int num_workers) {
+    worker_p* workers = new worker_p[num_workers];
+    return workers;
+}
+
 void worker_r::process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& sinkov,
                           vector<Result>& container, string text) {
 
@@ -73,4 +76,9 @@ void worker_r::process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& 
         }
     }
 
+}
+
+worker_r *worker_r::gen_worker(int num_workers) {
+    worker_r* workers = new worker_r[num_workers];
+    return workers;
 }

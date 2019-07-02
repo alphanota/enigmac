@@ -34,6 +34,8 @@ public:
 
     virtual void process_it(std::vector<Result>::iterator it, Enigma& machine, Sinkov& sinkov, std::vector<Result>& container, std::string text) = 0;
 
+    virtual worker * gen_worker(int num_workers) = 0;
+
 
     std::vector<Result> getContainer();
     void operator()()
@@ -48,6 +50,9 @@ public:
     virtual void process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& sinkov,
                     vector<Result>& container, string text) override ;
 
+
+    virtual worker_p * gen_worker(int num_workers) override;
+
 };
 
 class worker_r: public worker {
@@ -56,6 +61,8 @@ class worker_r: public worker {
 
     virtual void process_it(vector<Result>::iterator it, Enigma& machine, Sinkov& sinkov,
                     vector<Result>& container, string text) override;
+
+    virtual worker_r * gen_worker(int num_workers) override;
 
 };
 
