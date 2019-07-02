@@ -19,3 +19,26 @@ TEST_CASE("Enigma machine", "[enigma]") {
     REQUIRE( text == encryptedText );
 
 }
+
+
+TEST_CASE("vector slice", "[enigma]") {
+    //Enigma enigma;
+
+    std::string plaintext ("ABCDEFGHIJKLMNOP");
+
+    size_t size = plaintext.size();
+
+    size_t n = size / 4;
+
+
+
+    std::string::iterator cur = plaintext.begin();
+    std::string::iterator end = plaintext.end();
+
+    cur += n;
+
+    for (int j = 1; j < 4; j++){
+        std::string sub = std::string(cur, cur+n);
+        std::cout << sub << std::endl;
+    }
+}

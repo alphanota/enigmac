@@ -8,6 +8,10 @@
 #include "Sinkov.h"
 #include "Settings.h"
 #include "ResultContainer.h"
+#include "multi/multi.h"
+#include "multi/worker_p.h"
+#include "multi/worker_r.h"
+
 
 ResultContainer checkRingstellung(string text, ResultContainer previousResults) {
     std::multiset<Result> results = previousResults.getResults();
@@ -41,7 +45,8 @@ ResultContainer checkRingstellung(string text, ResultContainer previousResults) 
 ResultContainer checkGrundstellung(string text) {
     Enigma machine;
     Sinkov sinkov;
-    ResultContainer container(100000);
+    ResultContainer mContainer(100000);
+    int count;
     for(int i = 0; i < 1008; i+=3 ) {
         for(int l = 0; l < 26; l++) {
             for(int m = 0; m < 26; m++) {
@@ -51,17 +56,23 @@ ResultContainer checkGrundstellung(string text) {
                                         'A','A','A',"");
                     string message = machine.encode(text);
                     double score = sinkov.score(message);
-                    string settings = Settings::generateSettingsStr(rotorCombinations[i],rotorCombinations[i+1],rotorCombinations[i+2],
+                    string mSettings = Settings::generateSettingsStr(rotorCombinations[i],rotorCombinations[i+1],rotorCombinations[i+2],
                                                                     alphabet[l],alphabet[m],alphabet[r],
                                                                     'A','A','A',"");
-                    container.insert(Result(settings,score, i/3));
+                    mContainer.insert(Result(mSettings,score, i/3));
+                    count++;
 
                 }
             }
         }
-        cout << "finding grundstellung: trial " << i << endl;
+        //cout << "finding grundstellung: trial " << i << endl;
     }
-    return container;
+    cout << "# of mSettings checked : " << count << endl;
+
+    //mContainer.list();
+    int x;
+    cin >> x;
+    return mContainer;
 }
 
 ResultContainer checkStecker(string text, ResultContainer r) {
@@ -112,22 +123,45 @@ void decodeFromResults(ResultContainer results, int lines, string text) {
     }
 }
 
+void decodeFromResults(std::vector<Result> results, int lines, string text) {
+    Enigma machine;
+    std::vector<Result>::iterator it = results.begin();
+    for(int i =0; i < lines; i++){
+        machine.setSettings(it->setting);
+        cout << it->setting << " " << machine.encode(text) << endl;
+        it++;
+    }
+}
+
+
+vector<Result> checkGrundstellungParallel(string text) {
+    return a11c(text);
+}
+
+vector<Result> checkSteckerParallel(string basicString, vector<Result> vector) {
+    return checkFromPreviousResult(basicString, vector, worker_p_ns::gen_worker);
+}
+
+vector<Result> checkRingstellungParallel(string basicString, vector<Result> vector) {
+    return checkFromPreviousResult(basicString, vector, worker_r_ns::gen_worker);
+}
+
+
 void Crack::decipher(string text, int numSteckers) {
-    ResultContainer result(1);
-    result = checkGrundstellung(text);
+    vector<Result> result = checkGrundstellungParallel(text);
     int plugsLeft = numSteckers;
     if (plugsLeft > 0) {
-        result = checkStecker(text,result);
+        result = checkSteckerParallel(text,result);
         plugsLeft -= 1;
     }
 
-    result = checkRingstellung(text,result);
+    result = checkRingstellungParallel(text,result);
 
     for(int pair = 0; pair < plugsLeft; pair++) {
-        result = checkStecker(text,result);
+        result = checkSteckerParallel(text,result);
     }
 
-    result.save("phase3_results.txt");
+    //result.save("phase3_results.txt");
     decodeFromResults(result,20, text);
 }
 
@@ -137,4 +171,5 @@ void Crack::findStecker(string filename, string text) {
     result.list();
     result.save("step4.txt");
 }
+
 

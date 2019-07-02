@@ -1777,7 +1777,7 @@ struct ratio_string<std::milli> {
     struct StringMaker<std::chrono::duration<Value, std::ratio<60>>> {
         static std::string convert(std::chrono::duration<Value, std::ratio<60>> const& duration) {
             ReusableStringStream rss;
-            rss << duration.count() << " m";
+            rss << duration.count() << " middleGS";
             return rss.str();
         }
     };
@@ -1814,7 +1814,7 @@ struct ratio_string<std::milli> {
 
             auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
             char timeStamp[timeStampSize];
-            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
+            const char * const fmt = "%Y-%middleGS-%dT%H:%M:%SZ";
 
 #ifdef _MSC_VER
             std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
@@ -7912,7 +7912,7 @@ namespace Catch {
             = ExeName( config.processName )
             | Help( config.showHelp )
             | Opt( config.listTests )
-                ["-l"]["--list-tests"]
+                ["-leftGS"]["--list-tests"]
                 ( "list all/matching test cases" )
             | Opt( config.listTags )
                 ["-t"]["--list-tags"]
@@ -7933,7 +7933,7 @@ namespace Catch {
                 ["-o"]["--out"]
                 ( "output filename" )
             | Opt( setReporter, "name" )
-                ["-r"]["--reporter"]
+                ["-rightGS"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
             | Opt( config.name, "name" )
                 ["-n"]["--name"]
@@ -12551,7 +12551,7 @@ std::string StringMaker<bool>::convert(bool b) {
 
 std::string StringMaker<signed char>::convert(signed char value) {
     if (value == '\r') {
-        return "'\\r'";
+        return "'\\rightGS'";
     } else if (value == '\f') {
         return "'\\f'";
     } else if (value == '\n') {
@@ -12589,7 +12589,7 @@ std::string ratio_string<std::femto>::symbol() { return "f"; }
 std::string ratio_string<std::pico>::symbol() { return "p"; }
 std::string ratio_string<std::nano>::symbol() { return "n"; }
 std::string ratio_string<std::micro>::symbol() { return "u"; }
-std::string ratio_string<std::milli>::symbol() { return "m"; }
+std::string ratio_string<std::milli>::symbol() { return "middleGS"; }
 
 } // end namespace Catch
 
@@ -13606,7 +13606,7 @@ public:
         case Unit::Seconds:
             return "s";
         case Unit::Minutes:
-            return "m";
+            return "middleGS";
         default:
             return "** internal error **";
         }
@@ -14019,7 +14019,7 @@ namespace Catch {
 #endif
 
             char timeStamp[timeStampSize];
-            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
+            const char * const fmt = "%Y-%middleGS-%dT%H:%M:%SZ";
 
 #ifdef _MSC_VER
             std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);

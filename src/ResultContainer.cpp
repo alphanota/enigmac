@@ -5,8 +5,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
 #include "ResultContainer.h"
 
+ResultContainer::ResultContainer() : limit(0) {}
 ResultContainer::ResultContainer(int limit) : limit(limit) {}
 
 void ResultContainer::insert(const Result& result) {
@@ -72,6 +74,23 @@ ResultContainer::ResultContainer(std::string filename) {
 
     }
     myfile.close();
+}
+
+void ResultContainer::insertAll(const std::vector<Result> &results) {
+    for (Result result: results) {
+        insert(result);
+    }
+}
+
+void ResultContainer::merge(ResultContainer container) {
+    std::multiset<Result> results = container.getResults();
+    std::multiset<Result>::iterator it;
+
+    for (it = results.begin(); it != results.end(); ++it) {
+        insert(*it);
+    }
+    std::cout << "merged" << std::endl;
+
 }
 
 
