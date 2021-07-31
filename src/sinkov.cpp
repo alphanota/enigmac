@@ -1,79 +1,48 @@
+//
+// Created by angel on 5/16/19.
+//
+
+#include "Sinkov.h"
+
+
+#include <iostream>
 #include <stdio.h>
 #include <fstream>
-#include <iostream>
+#include <sstream>
+
 using namespace std;
 
-
-// g++ enigma.c -lgmpxx -lgmp -o enigma 
-typedef unsigned int uint32;
-
-
-const char *letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-
-
-float bigramScore[26][26];
-
-
-
-void loadFrequencies(char *file){
-    FILE *inputstream;
-	inputstream = fopen(file,"r");
-	int c;
-	float p,l;
-	char entry[2];
-    while( fscanf (inputstream,"%s %d %f %f\n",&entry,&c,&p,&l) == 4){
-    	//printf("%s %d %f %f\n",entry,c,p,l);
-    	bigramScore[ entry[0]-'A' ][ entry[1]-'A' ] = l;
-    	//printf(" %s %f \n",entry, bigramScore [ entry[0]-'A' ][ entry[1]-'A' ]);
-    }
-	fclose ( inputstream);
+Sinkov::Sinkov(){
+    readFile("../src/english_bigrams.csv");
 }
 
+void Sinkov::readFile(string file) {
+    ifstream myfile(file);
+    string   line;
 
-bool isLetter(int c){
-    
-    int d =  ( c - 65);
-    
-    if ( (d < 0) | (d > 25) ) {
-        return false;
+    while(getline(myfile, line))
+    {
+        std::stringstream   linestream(line);
+        std::string         data;
+        int c;
+        double p,l;
+
+        string entry;
+
+        linestream >> entry >> c >> p >> l;
+        bigramScore[ entry[0]-'A' ][ entry[1]-'A' ] = l;
+
     }
-    else return true;
-}
-void readsinkov(char *f){
-    
-	ifstream in(f, std::ifstream::binary);
-	
-	float sum = 0;
-	
-	int entry[2];
-	
-	
-	for ( entry[0] = in.get(); entry[0] != EOF; entry[0] = in.get() ) {
-        //  ...
-         entry[1] = in.peek();
-         
-           
-	    if (!isLetter(entry[0]) | !isLetter(entry[1])){
-	        //cout << entry[0] << " , " << entry[1] << endl;
-	        sum += 0;
-	    }
-	    
-	   else  sum = sum + bigramScore[ entry[0]-65 ][ entry[1]-65 ];
-    }
-	
-	
-	in.close();
-	
-	cout << f << ", " << sum << endl;
+    myfile.close();
+
 }
 
-
-
-int main(int argsc, char **args){
-    loadFrequencies("english_bigrams.csv");
-    readsinkov(args[1]);
-    
-    return 0;
-     
+float Sinkov::score(std::string text) {
+    float sum = 0;
+    for (int i = 1; i < text.size(); i++) {
+        int first = text[i-1] -'A';
+        int last = text[i] -'A';
+        sum = sum + bigramScore[first][last];
+    }
+    return sum;
 }
