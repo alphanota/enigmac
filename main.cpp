@@ -9,6 +9,11 @@ using  namespace std;
 
 int main(int argsc, char* argv[]) {
 
+    if(argsc <3) {
+        cout << "usage: ./enigma [ciphertext] [#plugpairs]" << endl;
+        return 0;
+    }
+
     if(argsc == 4 ) {
         Enigma machine;
         machine.setSettings(argv[2]);
@@ -16,10 +21,7 @@ int main(int argsc, char* argv[]) {
         return 0;
     }
 
-    if(argsc <3) {
-        cout << "usage: ./enigma [ciphertext] [#plugpairs]" << endl;
-        return 1;
-    }
+
     Crack crack;
 
     crack.decipher(argv[1],stoi(argv[2]));
